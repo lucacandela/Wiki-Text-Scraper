@@ -37,6 +37,8 @@ def getUnitBaseStats(unit: dict):
     page = urlopen(url)
     html = page.read().decode("utf-8")
     soup = BeautifulSoup(html, "html.parser")
+
+    # Get rid of all the extra stats on the html page that calculate orwin buff, kisoko buff, and sakura buff
     # https://stackoverflow.com/questions/32063985/deleting-a-div-with-a-particular-class-using-beautifulsoup
     for s in soup.find_all("span", {'class':'mw-collapsed'}): 
         s.decompose()
@@ -44,16 +46,21 @@ def getUnitBaseStats(unit: dict):
     exportDict = {"Name":unit.get("name")}
 
     
-
+    #Remove all HTML tags for easier filtering
     text = soup.getText()
 
+
     total_cost = []
+    
+    #Costs can either start with "Deployment - " or "Upgrade x -" so I need two statements to catch them both
+    #Could be one statement if I knew regex better
     deploy_cost = re.findall("deployment.*?\\b\d[\d,.]*\\b¥", text, re.IGNORECASE)
     total_cost.append(deploy_cost[0])
 
     upgrade_cost = re.findall("Upgrade \d.*?\\b\d[\d,.]*\\b¥", text, re.IGNORECASE)
     upgrade_cost = upgrade_cost[::2]
 
+    #Final step to add all the costs together
     for i in upgrade_cost:
         total_cost.append(i)
 
@@ -210,5 +217,5 @@ for pair in units:
     count+=1
 
 for u in unit_stats_master:
-    print("{}\nLevel 1 Stats\n{}\nLevel 100 Stats\n{}\n\n".format(u.get("Name"),u.get("Level 1 Stats"), u.get("Level 100 Stats")))
+    print("{}\nLevel 1 Stats\n{}\nLevel 100 Stats\n{}\n\n".format(u.get("Name"), u.get("Level 1 Stats"), u.get("Level 1 Stats")))
     #print("\'{}\'s deployment cost is {}\n\n".format(u.get("Name"), u.get("Level 1 Stats")[0].get("Deployment")))
