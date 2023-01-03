@@ -156,13 +156,13 @@ def getUnitBaseStats(unit: dict):
         level_one_stats.append({})
 
         #Setting all the key values for level one
-        dict_upgr_val = total_cost[i][(upgrade_split_index+2):len(total_cost[i])]
+        dict_upgr_val = total_cost[i][(upgrade_split_index+2):(len(total_cost[i])-1)] #len-1 to chop off the Yen symbol
         dict_dmg_val = damage_level_one[i][(damage_split_index+2):len(damage_level_one[i])]
         dict_rng_val = attack_range_level_one[i][(range_split_index+2):len(attack_range_level_one[i])]
         dict_spa_val = spa_level_one[i][(spa_split_index+2):len(spa_level_one[i])]
         dict_dps_val = dps_level_one[i][(dps_split_index+2):len(dps_level_one[i])]
         if has_spawns:
-            dict_spawn_val = spawn_level_one[i][(spawn_split_index+2):len(spawn_level_one[i])]
+            dict_spawn_val = spawn_level_one[i][(spawn_split_index+2):(len(spawn_level_one[i])-3)] #len-3 to chop off " HP"
 
         #Putting keys and values into newly added dict
         level_one_stats[i][dict_upgr_key] = dict_upgr_val
@@ -177,13 +177,13 @@ def getUnitBaseStats(unit: dict):
         level_one_hundred_stats.append({})
 
         #Setting all the key values for level one hundreed
-        dict_upgr_val = total_cost[i][(upgrade_split_index+2):len(total_cost[i])]
+        dict_upgr_val = total_cost[i][(upgrade_split_index+2):(len(total_cost[i])-1)] #len-1 to chop off the Yen symbol
         dict_dmg_val = damage_level_one_hundred[i][(damage_split_index+2):len(damage_level_one_hundred[i])]
         dict_rng_val = attack_range_level_one_hundred[i][(range_split_index+2):len(attack_range_level_one_hundred[i])]
         dict_spa_val = spa_level_one_hundred[i][(spa_split_index+2):len(spa_level_one_hundred[i])]
         dict_dps_val = dps_level_one_hundred[i][(dps_split_index+2):len(dps_level_one_hundred[i])]
         if has_spawns:
-            dict_spawn_val = spawn_level_one_hundred[i][(spawn_split_index+2):len(spawn_level_one_hundred[i])]
+            dict_spawn_val = spawn_level_one_hundred[i][(spawn_split_index+2):(len(spawn_level_one_hundred[i])-3)] #len-3 to chop off " HP"
 
         #Putting keys and values into newly added dict
         level_one_hundred_stats[i][dict_upgr_key] = dict_upgr_val
