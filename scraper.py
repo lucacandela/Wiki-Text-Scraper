@@ -2,9 +2,10 @@ import re
 from time import sleep
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
-
-
-
+import json
+from datetime import datetime
+from pathlib import Path
+import os
 
 def getUnitList():
     check_list = []
@@ -210,12 +211,21 @@ units = getUnitList()
 
 unit_stats_master = []
 
-count = 0
+now = datetime.now()
+current_date = now.strftime("%m_%d_%Y %H.%M.%S")
+rel_directory= Path(__file__).parent.absolute()
+rel_directory = str(rel_directory)
+json_folder = rel_directory+"\\JSON Files\\"+current_date
+Path(json_folder).mkdir(parents=True, exist_ok=True)
+
+unit_count = 0
 for pair in units:
     unit_stats_master.append(getUnitBaseStats(pair))
-    print("{}: Finished Getting {} Stats".format(count,unit_stats_master[count].get("Name")))
-    count+=1
+    print("{}: Finished Getting {} Stats".format(unit_count,unit_stats_master[unit_count].get("Name")))
+    unit_count+=1
 
+file_count = 0
 for u in unit_stats_master:
-    print("{}\nLevel 1 Stats\n{}\nLevel 100 Stats\n{}\n\n".format(u.get("Name"), u.get("Level 1 Stats"), u.get("Level 1 Stats")))
-    #print("\'{}\'s deployment cost is {}\n\n".format(u.get("Name"), u.get("Level 1 Stats")[0].get("Deployment")))
+    file_count+=1
+    with open("{}\\Unit {}.json".format(json_folder,file_count), 'w') as file:
+        json.dump(u, file)
