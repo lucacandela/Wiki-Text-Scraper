@@ -62,8 +62,17 @@ def getUnitBaseStats(unit: dict):
     exportDict = {"Name":unit.get("name")}
     exportDict["Tags"] = categoryTags
     
+    #check if page is devoid of info
+    tagsResult = len(exportDict.get("Tags"))
+    if tagsResult == 0:
+        exportDict["Errors"] = "Wiki Page Empty - Use another dated version of this unit"
+        return exportDict
+    
+
     #Remove all HTML tags for easier filtering
     text = soup.getText()
+    
+    #uncomment for the HTML Values
     #print(text)
 
     #Add spawn_cap
@@ -335,6 +344,7 @@ units = getUnitList()
 #bulma = getUnitBaseStats(units[155])
 #testUnit = getUnitBaseStats(units[217])
 #ice_queen_evo = getUnitBaseStats(units[135])
+#puchi_unevo = getUnitBaseStats(units[100])
 
 unit_stats_master = []
 
@@ -352,5 +362,13 @@ for pair in units:
     file = open("{}\\Unit {}.json".format(json_folder,unit_count), 'w')
     json.dump(u, file, indent=4, separators=(',', ': '))
     file = open("{}\\Logs.txt".format(json_folder), 'a')
-    file.write("{}: Finished Getting {} Stats\n".format(unit_count,unit_stats_master[unit_count-1].get("Name")))
+    string_to_print = "{}: Finished Getting {} Stats.".format(unit_count,unit_stats_master[unit_count-1].get("Name"))
+    if unit_stats_master[unit_count-1].get("Errors", "None") != "None":
+        string_to_print += " ERRORS FOUND - '{}'\n".format(unit_stats_master[unit_count-1].get("Errors"))
+    else:
+        string_to_print += "\n"
+    file.write(string_to_print)
+    string_to_print = string_to_print.replace("Getting", "Writing")
+    string_to_print = string_to_print.replace("Stats.", "to file.")
+    print(string_to_print, end="")
     unit_count+=1
