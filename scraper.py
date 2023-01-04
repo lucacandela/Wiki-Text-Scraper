@@ -355,4 +355,4 @@ file_count = 0
 for u in unit_stats_master:
     file_count+=1
     with open("{}\\Unit {}.json".format(json_folder,file_count), 'w') as file:
-        json.dump(u, file)
+        json.dump(u, file, indent=4, separators=(',', ': '))
