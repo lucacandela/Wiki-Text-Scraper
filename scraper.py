@@ -51,9 +51,16 @@ def getUnitBaseStats(unit: dict):
     for s in soup.find_all("span", {'class':'mw-collapsed'}): 
         s.decompose()
 
+    #Find all category tags
+    categoryTags = []
+    for s in soup.find_all("a", {'class':'newcategory'}):
+        if s !=None:
+            categoryTags.append(s.text)
+    categoryTags = list(set(categoryTags))
+
     #Add name
     exportDict = {"Name":unit.get("name")}
-
+    exportDict["Tags"] = categoryTags
     
     #Remove all HTML tags for easier filtering
     text = soup.getText()
@@ -323,13 +330,11 @@ def getUnitBaseStats(unit: dict):
 
 units = getUnitList()
 
+#Test cases
 #luci = getUnitBaseStats(units[146])
 #bulma = getUnitBaseStats(units[155])
-testUnit = getUnitBaseStats(units[217])
-#/*count = 1
-#for pair in units:
-#    print("{}: {}".format(count,pair))
-#    count+=1
+#testUnit = getUnitBaseStats(units[217])
+#ice_queen_evo = getUnitBaseStats(units[135])
 
 unit_stats_master = []
 
