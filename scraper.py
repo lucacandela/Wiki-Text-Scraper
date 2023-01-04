@@ -144,7 +144,7 @@ def getUnitBaseStats(unit: dict):
                 loop_list.append(l)
         loop_list.remove("")
         item[0] = loop_list[0]
-        aoe_list.append(item)
+        aoe_list.append({item[0]:item[1]})
     exportDict["Attack Type"] = aoe_list
 
 
