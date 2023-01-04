@@ -345,14 +345,12 @@ rel_directory = str(rel_directory)
 json_folder = rel_directory+"\\JSON Files\\"+current_date
 Path(json_folder).mkdir(parents=True, exist_ok=True)
 
-unit_count = 0
+unit_count = 1
 for pair in units:
-    unit_stats_master.append(getUnitBaseStats(pair))
-    print("{}: Finished Getting {} Stats".format(unit_count,unit_stats_master[unit_count].get("Name")))
+    u = getUnitBaseStats(pair)
+    unit_stats_master.append(u)
+    file = open("{}\\Unit {}.json".format(json_folder,unit_count), 'w')
+    json.dump(u, file, indent=4, separators=(',', ': '))
+    file = open("{}\\Logs.txt".format(json_folder), 'a')
+    file.write("{}: Finished Getting {} Stats\n".format(unit_count,unit_stats_master[unit_count-1].get("Name")))
     unit_count+=1
-
-file_count = 0
-for u in unit_stats_master:
-    file_count+=1
-    with open("{}\\Unit {}.json".format(json_folder,file_count), 'w') as file:
-        json.dump(u, file, indent=4, separators=(',', ': '))
