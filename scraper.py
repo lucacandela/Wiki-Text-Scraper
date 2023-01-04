@@ -135,7 +135,7 @@ def getUnitBaseStats(unit: dict):
         if a[0] == "None" or a[0] == "Single":
             a.reverse()
     #remove the extraneous parts
-    aoe_list = []
+    aoe_list = {}
     for item in aoe_type:
         match = re.findall("(Upgrade \d)|(Deployment)", item[0], re.IGNORECASE)
         loop_list = []
@@ -144,7 +144,7 @@ def getUnitBaseStats(unit: dict):
                 loop_list.append(l)
         loop_list.remove("")
         item[0] = loop_list[0]
-        aoe_list.append({item[0]:item[1]})
+        aoe_list.update({item[0]:item[1]})
     exportDict["Attack Type"] = aoe_list
 
 
