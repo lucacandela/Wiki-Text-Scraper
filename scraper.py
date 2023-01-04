@@ -67,11 +67,19 @@ def getUnitBaseStats(unit: dict):
     if tagsResult == 0:
         exportDict["Errors"] = "Wiki Page Empty - Use another dated version of this unit"
         return exportDict
-    
 
     #Remove all HTML tags for easier filtering
     text = soup.getText()
-    
+ 
+    #Try and remove all the trivia portions
+    try:
+        trivia_index = text.find("Trivia")
+        categories_index = text.find("Categories")
+        text = text[0:trivia_index] + text[categories_index:len(text)]
+    except Exception:
+        #Might Raise exception if there's no Trivia portion or Categories portion
+        pass
+
     #uncomment for the HTML Values
     #print(text)
 
@@ -339,12 +347,19 @@ def getUnitBaseStats(unit: dict):
 
 units = getUnitList()
 
+def getIndexOfCharacter(name: str, li: list):
+    index_count = 0
+    for unit in li:
+        if unit.get("name") == name:
+            return index_count
+        else:
+            index_count += 1
+    return None
+
+
 #Test cases
-#luci = getUnitBaseStats(units[146])
-#bulma = getUnitBaseStats(units[155])
-#testUnit = getUnitBaseStats(units[217])
-#ice_queen_evo = getUnitBaseStats(units[135])
-#puchi_unevo = getUnitBaseStats(units[100])
+#goju_six_eyes = getIndexOfCharacter("Goju (Six Eyes)", units)
+#test_case = getUnitBaseStats(units[goju_six_eyes])
 
 unit_stats_master = []
 
